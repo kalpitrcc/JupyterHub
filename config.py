@@ -3,7 +3,7 @@ import os, pwd, subprocess
 
 c.JupyterHub.authenticator_class = 'jupyterhub.auth.DummyAuthenticator'
 #c.JupyterHub.authenticator_class = 'jupyterhub.auth.APIAuthenticator'
-c.JupyterHub.base_url = '/{}'.format(os.environ['PROJECT'])
+c.JupyterHub.base_url = '/'
 c.JupyterHub.ip = '0.0.0.0'
 c.JupyterHub.port = 8888
 def pre_spawn_hook(spawner):
