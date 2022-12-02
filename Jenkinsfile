@@ -27,7 +27,7 @@ pipeline {
     }
   }
   environment {
-    DOCKER_HUB_CREDENTIALS = credentials('DEVSDS-DOCKERHUB')
+    DOCKER_HUB_CREDENTIALS = credentials('DEVSDS_DOCKERHUB')
     }
   
   
