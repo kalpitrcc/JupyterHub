@@ -52,9 +52,8 @@ pipeline {
     stage('Login-Into-Docker') {
       steps {
         container('docker') {
-           steps{
-                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | sudo docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
-            }
+          sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | sudo docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+      
       }
     }
     }
