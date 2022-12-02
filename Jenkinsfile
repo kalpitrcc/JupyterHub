@@ -26,6 +26,11 @@ pipeline {
         '''
     }
   }
+  environment {
+    DOCKER_HUB_CREDENTIALS = credentials('DEVSDS-DOCKERHUB')
+    }
+  
+  
   stages {
     stage('Clone') {
       steps {
@@ -34,27 +39,32 @@ pipeline {
         }
       }
     }  
+    
+   
+    
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t kalpit191/jupyterhub:latest .'
+          sh 'docker build -t devsds/jupyterhub:v1.0_$BUILD_NUMBER .'
         }
       }
     }
-//     stage('Login-Into-Docker') {
-//       steps {
-//         container('docker') {
-//           sh 'docker login -u <docker_username> -p <docker_password>'
-//       }
-//     }
-//     }
-//      stage('Push-Images-Docker-to-DockerHub') {
-//       steps {
-//         container('docker') {
-//           sh 'docker push ss69261/testing-image:latest'
-//       }
-//     }
-//      }
+    stage('Login-Into-Docker') {
+      steps {
+        container('docker') {
+           steps{
+                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | sudo docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+            }
+      }
+    }
+    }
+     stage('Push-Images-Docker-to-DockerHub') {
+      steps {
+        container('docker') {
+          sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
+      }
+    }
+     }
   }
     post {
       always {
