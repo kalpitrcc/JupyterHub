@@ -26,6 +26,7 @@ pipeline {
         '''
     }
   }
+  
   environment {
     DOCKER_HUB_CREDENTIALS = credentials('DEVSDS_DOCKERHUB')
     }
@@ -64,11 +65,21 @@ pipeline {
       }
     }
      }
+   stage('Deploy Jupyterhub'){
+     steps{
+        script{
+	         String filenew = readFile('jupyterhub-deploy.yaml').replaceAll('@@@IMAGE_TAG@@@',"devsds/jupyterhub:v1.0_" + env.BUILD_NUMBER )   
+	         writeFile file:'jupyterhub-deploy.yaml', text: filenew
+	}
+        sh 'cat jupyterhub-deploy.yaml'	
+     }
+   }
+
   }
     post {
       always {
         container('docker') {
-          sh 'docker images'
+          sh 'docker rmi -f devsds/jupyterhub:v1.0_$BUILD_NUMBER'
       }
       }
     }
