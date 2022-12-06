@@ -48,13 +48,13 @@ pipeline {
     
    
     
-//     stage('Build-Docker-Image') {
-//       steps {
-//         container('docker') {
-//           sh 'docker build -t devsds/jupyterhub:v1.0_$BUILD_NUMBER .'
-//         }
-//       }
-//     }
+    stage('Build-Docker-Image') {
+      steps {
+        container('docker') {
+          sh 'docker build -t devsds/jupyterhub:v1.0_$BUILD_NUMBER .'
+        }
+      }
+    }
     stage('Login-Into-Docker') {
       steps {
         container('docker') {
@@ -63,13 +63,13 @@ pipeline {
       }
     }
     }
-//      stage('Push-Images-Docker-to-DockerHub') {
-//       steps {
-//         container('docker') {
-//           sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
-//       }
-//     }
-//      }
+     stage('Push-Images-Docker-to-DockerHub') {
+      steps {
+        container('docker') {
+          sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
+      }
+    }
+     }
    stage('Deploy Jupyterhub'){
      steps{
         script{
@@ -87,8 +87,10 @@ pipeline {
                 //withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
                 //sh 'kubectl get pods'
     		withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
+			
       			sh 'kubectl apply -f /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml'
-			sh 'kubectl get pods --all-namespaces'
+			sh 'sleep 15s'
+			sh 'kubectl get pods -n jnks'
 			
     		}
  	      }
