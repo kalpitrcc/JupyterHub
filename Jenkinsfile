@@ -6,6 +6,11 @@ pipeline {
         kind: Pod
         spec:
           containers:
+	  - name: shell
+    	    image: viejo/kubectl
+	    command:
+	    - cat:
+	      tty: true
           - name: git
             image: alpine/git:latest
             command:
@@ -76,7 +81,7 @@ pipeline {
    }
    stage('Apply Kubernetes files') {
       steps{
-              container('docker') {
+              container('shell') {
                 //withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
                 //sh 'kubectl get pods'
     		withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
