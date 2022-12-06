@@ -87,8 +87,18 @@ pipeline {
                 //withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
                 //sh 'kubectl get pods'
     		withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
+			sh '''
 			
-      			sh 'kubectl apply -f /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml'
+#!/bin/bash
+
+value=$(kubectl get deployments -n jnks | grep jupyter-deployment | awk '{print $1}')
+if [[ $value = "jupyter-deployment"  ]]; then
+	kubectl set image deployment/jupyter-deployment jupyter-app=devsds/jupyterhub:v1.0_$BUILD_NUMBER -n jnks
+else
+	kubectl apply -f  /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml
+fi
+			'''
+      			//sh 'kubectl apply -f /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml'
 			sh 'sleep 15s'
 			sh 'kubectl get pods -n jnks'
 			
