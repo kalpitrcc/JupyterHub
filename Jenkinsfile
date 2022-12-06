@@ -85,8 +85,8 @@ pipeline {
                 //withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
                 //sh 'kubectl get pods'
     		withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
-      			//sh 'kubectl apply -f JupyterHub/jupyterhub-deploy.yaml'
-			sh 'kubectl get pods'
+      			sh 'kubectl apply -f JupyterHub/jupyterhub-deploy.yaml'
+			
     		}
  	      }
        }  
