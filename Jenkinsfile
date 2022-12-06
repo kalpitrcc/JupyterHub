@@ -19,8 +19,8 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
-	  - name: shell
-            image: viejo/kubectl 
+          - name: shell
+            image: viejo/kubectl
             command:
             - cat
             tty: true
