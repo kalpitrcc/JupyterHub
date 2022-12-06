@@ -57,14 +57,14 @@ pipeline {
       
       }
     }
-    }'''
-     stage('Push-Images-Docker-to-DockerHub') {
-      steps {
-        container('docker') {
-          sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
-      }
     }
-     }'''
+//      stage('Push-Images-Docker-to-DockerHub') {
+//       steps {
+//         container('docker') {
+//           sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
+//       }
+//     }
+//      }
    stage('Deploy Jupyterhub'){
      steps{
         script{
