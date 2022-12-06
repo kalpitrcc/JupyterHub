@@ -48,13 +48,13 @@ pipeline {
     
    
     
-    stage('Build-Docker-Image') {
-      steps {
-        container('docker') {
-          sh 'docker build -t devsds/jupyterhub:v1.0_$BUILD_NUMBER .'
-        }
-      }
-    }
+//     stage('Build-Docker-Image') {
+//       steps {
+//         container('docker') {
+//           sh 'docker build -t devsds/jupyterhub:v1.0_$BUILD_NUMBER .'
+//         }
+//       }
+//     }
     stage('Login-Into-Docker') {
       steps {
         container('docker') {
@@ -77,6 +77,8 @@ pipeline {
 	         writeFile file:'jupyterhub-deploy.yaml', text: filenew
 	}
         sh 'cat jupyterhub-deploy.yaml'	
+	sh 'pwd'
+	sh 'ls'
      }
    }
    stage('Apply Kubernetes files') {
