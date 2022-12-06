@@ -6,11 +6,6 @@ pipeline {
         kind: Pod
         spec:
           containers:
-	  - name: shell
-    	    image: viejo/kubectl
-	    command:
-	    - cat:
-	      tty: true
           - name: git
             image: alpine/git:latest
             command:
@@ -21,6 +16,11 @@ pipeline {
             command:
             - cat
             tty: true
+	  - name: shell
+	    image: viejo/kubectl
+	    command:
+	    - cat:
+	    tty: true
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
