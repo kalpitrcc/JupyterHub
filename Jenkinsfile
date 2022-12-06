@@ -45,9 +45,6 @@ pipeline {
         }
       }
     }  
-    
-   
-    
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
@@ -59,17 +56,16 @@ pipeline {
       steps {
         container('docker') {
           sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
-      
+        }
       }
     }
-    }
-     stage('Push-Images-Docker-to-DockerHub') {
+    stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
           sh 'docker push devsds/jupyterhub:v1.0_$BUILD_NUMBER'
+        }
       }
-    }
-     }
+   }
    stage('Deploy Jupyterhub'){
      steps{
         script{
@@ -84,8 +80,6 @@ pipeline {
    stage('Apply Kubernetes files') {
       steps{
               container('shell') {
-                //withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
-                //sh 'kubectl get pods'
     		withKubeConfig([credentialsId: 'KUBECONFIG', serverUrl: 'https://hpecp-10-1-100-147.rcc.local:10007']) {
 			sh '''
 			
@@ -98,10 +92,8 @@ else
 	kubectl apply -f  /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml
 fi
 			'''
-      			//sh 'kubectl apply -f /home/jenkins/agent/workspace/jupyterhub_main/jupyterhub-deploy.yaml'
 			sh 'sleep 15s'
 			sh 'kubectl get pods -n jnks'
-			
     		}
  	      }
        }  
